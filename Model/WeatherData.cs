@@ -1,43 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace ApiWeatherMonitoring.Model
 {
     public class WeatherData : ISubject
     {
-      
+        private List<IObserver> observers; //adicionado uma lista para conter os Observadores
+        private float temperature, humidity, pressure;
+        public WeatherData ()
+        {
+            observers = new List<IObserver>(); //criei a lista no construtor
+        }
+        public void RegisterObserver(IObserver o)
+        {
+            observers.Add(o); //cada vez que um observador fazer um registro, é adicionado no final da lista
+        }
+        public void RemoveObserver(IObserver o)
+        {
+            if (observers != null && observers.Count() > 0)
+            {
+                observers.Remove(o);
+            }
+        }
+
+        public void NotifyObservers()
+        {   
+            foreach (var observer in observers)
+            {
+                observer.Update(temperature, humidity, pressure);
+            }
+
+		}        
+
+        public void MeasurementsChanged()
+        {
+            NotifyObservers();         
+        }
+
+        public void SetMeasurementsChanged(float temperature, float humidity, float pressure)
+        {
+            this.temperature = temperature;
+            this.humidity = humidity;
+            this.pressure = pressure;
+            MeasurementsChanged();
+        }
+
         public float GetTemperature()
         {
-            return 10.5f;
+            return temperature;
 
         }
 
         public float GetHumidity()
         {
-            return 57;
+            return humidity;
         }
 
         public float GetPressure()
         {
-            return 8;
+            return pressure;
         }
-        public void MeasurementsChanged()
-        {
-            float temp = GetTemperature();
-            float humidity = GetHumidity();
-            float pressure = GetPressure();          
-        }
-
-        public void RegisterObserver()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveObserver()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void NotifyObservers()
-        {
-            throw new NotImplementedException();
-        }
+   
     }
 }
