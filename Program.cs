@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+/*var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -22,4 +22,25 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run();*/
+
+using ApiWeatherMonitoring.Model;
+
+namespace ApiWeatherMonitoring
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            WeatherData weatherData = new WeatherData();
+
+            CurrentConditionsDisplay currentConditions = new CurrentConditionsDisplay(weatherData);
+            weatherData.SetMeasurementsChanged(19, 40, 11);
+        }
+
+    }
+
+
+}
+
+
